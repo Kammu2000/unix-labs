@@ -7,19 +7,24 @@ import { myCatStreaming } from "./streaming";
 import { myCatIdiomatic } from "./idiomatic";
 
 const argv = yargs(hideBin(process.argv))
-  .option("file", {
+  .option("files", {
     alias: "f",
     type: "string",
+    array: true,
     demandOption: true,
   })
   .parseSync();
 
-const filePath = path.resolve(argv.file);
+const files = argv.files;
 
-if (existsSync(filePath)) {
-  myCatNaive(filePath);
-  myCatStreaming(filePath);
-  myCatIdiomatic(filePath);
-} else {
-  process.stderr.write("No such file exists \n");
+for (const file of files) {
+  const filePath = path.resolve(file);
+
+  if (existsSync(filePath)) {
+    myCatNaive(filePath);
+    myCatStreaming(filePath);
+    myCatIdiomatic(filePath);
+  } else {
+    process.stderr.write("No such file exists \n");
+  }
 }
