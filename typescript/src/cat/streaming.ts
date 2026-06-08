@@ -1,20 +1,12 @@
 import { createReadStream } from "fs";
+import { StringDecoder } from "string_decoder";
 
-export const myCatStreaming = (filePath: string): void => {
+export const myCatStreaming = async (filePath: string): Promise<void> => {
   const stream = createReadStream(filePath);
+  const decoder = new StringDecoder("utf8");
 
-  stream.on("data", (chunk: Buffer) => {
-    process.stdout.write(chunk.toString());
-  });
-
-  process.stdout.on("error", (err: NodeJS.ErrnoException) => {
-    // Rationale: consumer which was consuming stream data exited and we don't destroy stream (so we keep writing to destroyed consumer)
-    // then we get EPIPE error
-    if (err.code === "EPIPE") {
-      stream.destroy();
-      return;
-    }
-
-    throw err;
-  });
+  for await (const chunk of stream) {
+    const chunkStr = decoder.write(chunk);
+    process.stdout.write(chunkStr);
+  }
 };
