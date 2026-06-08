@@ -4,7 +4,7 @@
   "description": "Implementation of unix tools for learning and fun",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "prettier . --write && tsc",
     "format": "prettier . --write",
     "format:check": "prettier . --check"
   },
