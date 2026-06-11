@@ -1,26 +1,26 @@
 import { Worker } from "worker_threads";
 
-enum MessageType {
+export enum MessageType {
   TASK = "TASK",
   RESULT = "RESULT",
   ERROR = "ERROR",
 }
 
-type TaskId = number;
+export type TaskId = number;
 
-interface TaskMessage<T> {
+export interface TaskMessage<T> {
   type: MessageType.TASK;
   taskId: TaskId;
   payload: T;
 }
 
-interface ResultMessage<T> {
+export interface ResultMessage<T> {
   type: MessageType.RESULT;
   taskId: TaskId;
   payload: T;
 }
 
-interface ErrorMessage<T> {
+export interface ErrorMessage<T> {
   type: MessageType.ERROR;
   taskId: TaskId;
   payload: T;
@@ -28,7 +28,7 @@ interface ErrorMessage<T> {
 
 export class WorkerPool<TReq, TRes> {
   private poolSize: number;
-  private workerFile: string;
+  private workerScript: URL;
   private workers: Worker[] = [];
   private idleWorkers: Worker[] = [];
   private taskQueue: TaskMessage<TReq>[] = [];
@@ -36,10 +36,11 @@ export class WorkerPool<TReq, TRes> {
     TaskId,
     { resolve: (value: TRes) => void; reject: (err: Error) => void }
   >();
+  private taskCounter = 0;
 
-  constructor({ size, workerFile }: { size: number; workerFile: string }) {
+  constructor({ size, workerScript }: { size: number; workerScript: URL }) {
     this.poolSize = size;
-    this.workerFile = workerFile;
+    this.workerScript = workerScript;
 
     for (let i = 0; i < this.poolSize; i++) {
       const worker = this.createWorker();
@@ -49,20 +50,18 @@ export class WorkerPool<TReq, TRes> {
   }
 
   private createWorker(): Worker {
-    const worker = new Worker(this.workerFile);
+    const worker = new Worker(this.workerScript);
 
-    worker.on("message", (data): void => {
-      console.log(data);
+    worker.on(
+      "message",
+      (msg: ResultMessage<TRes> | ErrorMessage<string>): void => {
+        this.onWorkerMessage(worker, msg);
+      },
+    );
 
-      worker.on("message", (msg: ResultMessage<TRes> | ErrorMessage<string>): void => {
-          this.onWorkerMessage(worker, msg);
-      });
-
-      worker.on("error", (err: Error): void => {
-          process.stderr.write(`${err.message}\n`);
-      });
+    worker.on("error", (err: Error): void => {
+      process.stderr.write(`${err.message}\n`);
     });
-
     return worker;
   }
 
@@ -76,33 +75,34 @@ export class WorkerPool<TReq, TRes> {
       return;
     }
 
+    this.pendingTasks.delete(msg.taskId);
+    this.idleWorkers.push(worker);
+
     if (msg.type === MessageType.ERROR) {
       taskHandlers.reject(new Error(msg.payload));
     } else {
       taskHandlers.resolve(msg.payload);
     }
 
-    this.pendingTasks.delete(msg.taskId);
-    this.idleWorkers.push(worker);
     this.processNextTask();
   }
 
   private processNextTask(): void {
-    if(this.taskQueue.length === 0){
+    if (this.taskQueue.length === 0 || this.idleWorkers.length === 0) {
       return;
     }
 
     const task = this.taskQueue.shift();
 
-    if(this.idleWorkers.length > 0){
+    if (this.idleWorkers.length > 0) {
       const worker = this.idleWorkers.pop() as Worker;
-      worker.postMessage(task);      
+      worker.postMessage(task);
     }
   }
 
   submitTask(task: TReq): Promise<TRes> {
     return new Promise((resolve, reject) => {
-      const taskId = Date.now() + Math.random();
+      const taskId = this.taskCounter++;
       this.pendingTasks.set(taskId, { resolve, reject });
 
       const taskMessage: TaskMessage<TReq> = {

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Implementation of unix tools for learning and fun",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "prettier . --write && tsc",
     "format": "prettier . --write",
