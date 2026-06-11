@@ -2,7 +2,7 @@ import { createReadStream, existsSync } from "fs";
 import path from "path";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { head } from "./head";
+import { head } from "./head.js";
 
 const argv = yargs(hideBin(process.argv))
   .option("files", {

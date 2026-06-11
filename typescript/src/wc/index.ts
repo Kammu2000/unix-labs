@@ -2,7 +2,7 @@ import { existsSync } from "fs";
 import path from "path";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { wc, WcResult } from "./wc";
+import { wc, WcResult } from "./wc.js";
 // import { wc as wc2 } from "./wc2";
 
 const argv = yargs(hideBin(process.argv))

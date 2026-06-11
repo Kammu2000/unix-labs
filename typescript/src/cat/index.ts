@@ -2,9 +2,9 @@ import { existsSync } from "fs";
 import path from "path";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { myCatNaive } from "./naive";
-import { myCatStreaming } from "./streaming";
-import { myCatIdiomatic } from "./idiomatic";
+import { myCatNaive } from "./naive.js";
+import { myCatStreaming } from "./streaming.js";
+import { myCatIdiomatic } from "./idiomatic.js";
 
 const argv = yargs(hideBin(process.argv))
   .option("files", {
