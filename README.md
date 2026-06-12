@@ -22,8 +22,7 @@ Tools are implemented in different languages to compare ideas, trade-offs, and l
 - grep 
 - find
 - du
-
-More coming soon...
+- xargs
 
 ## Philosophy
 
