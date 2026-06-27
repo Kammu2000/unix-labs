@@ -9,7 +9,7 @@ void tail(std::istream &readable_stream, int k) {
   std::string line;
   std::queue<std::string> q;
 
-  while (k > 0 and std::getline(readable_stream, line)) {
+  while (std::getline(readable_stream, line)) {
     if (q.size() == threshold) {
       q.pop();
     }
@@ -19,7 +19,7 @@ void tail(std::istream &readable_stream, int k) {
   }
 
   while (q.size()) {
-    auto &temp = q.front();
+    auto temp = std::move(q.front());
     q.pop();
 
     std::cout << temp << "\n";
