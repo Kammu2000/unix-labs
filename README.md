@@ -19,10 +19,10 @@ Tools are implemented in different languages to compare ideas, trade-offs, and l
 - head
 - tail 
 - wc
-- grep 
-- find
 - du
 - xargs
+- grep 
+- find
 
 ## Philosophy
 

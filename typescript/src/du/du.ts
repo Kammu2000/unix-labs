@@ -19,7 +19,6 @@ const logEntity = (
   process.stdout.write(`${displaySize}  ${displayPath} \n`);
 };
 
-
 /*
  * Design Decision: Using `stats.size` (logical file size) instead of `stats.blocks`.
  *

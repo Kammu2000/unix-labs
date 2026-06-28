@@ -29,10 +29,7 @@ export const wc = async (filePath: string): Promise<WcResult> => {
 
   const stream = createReadStream(filePath);
 
-  for await (const chunk of stream) {
-    const chunkStr = decoder.write(chunk);
-
-    byteCnt += chunk.length;
+  const processChunk = (chunkStr: string): void => {
     lineCnt += getNewLineCharCnt(chunkStr);
 
     const adaptedChunkStr = leftOverChunk + chunkStr;
@@ -40,18 +37,19 @@ export const wc = async (filePath: string): Promise<WcResult> => {
 
     leftOverChunk = words.pop() ?? "";
     wordCnt += words.length;
+  };
+
+  for await (const chunk of stream) {
+    const chunkStr = decoder.write(chunk);
+
+    byteCnt += chunk.length;
+    processChunk(chunkStr);
   }
 
   const tail = decoder.end();
 
   if (tail) {
-    lineCnt += getNewLineCharCnt(tail);
-
-    const adaptedChunkStr = leftOverChunk + tail;
-    const words = adaptedChunkStr.split(/\s+/);
-
-    leftOverChunk = words.pop() ?? "";
-    wordCnt += words.length;
+    processChunk(tail);
   }
 
   if (leftOverChunk) {
