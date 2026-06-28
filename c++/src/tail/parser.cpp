@@ -1,23 +1,37 @@
+#include <cstdlib>
 #include <stdexcept>
 #include <string>
+#include <unistd.h>
 #include <vector>
 
 #include "parser.hpp"
+#include "utils.hpp"
 
 TailOptions parse(int argc, char *argv[]) {
   std::vector<std::string> fileNames;
   int count = 0;
+  int opt;
 
-  for (int i = 1; i < argc; i++) {
-    if (std::string(argv[i]) == "-n") {
-      if (i + 1 < argc) {
-        count = std::stoi(argv[++i]);
-      } else {
-        throw std::runtime_error("No value found after -n");
-      }
-    } else {
-      fileNames.push_back(argv[i]);
+  while ((opt = getopt(argc, argv, "n:")) != -1) {
+    switch (opt) {
+    case 'n': {
+      count = parseInt(optarg);
+      break;
     }
+
+    case '?': {
+      if (optopt == 'n') {
+        throw std::runtime_error("Missing value for -n");
+      }
+
+      throw std::runtime_error("Unknown option");
+      break;
+    }
+    }
+  }
+
+  for (int i = optind; i < argc; i++) {
+    fileNames.push_back(argv[i]);
   }
 
   return {fileNames, count};
