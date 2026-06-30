@@ -31,7 +31,7 @@ WcResult wc_modern(std::istream &readable_stream) {
     */
     unsigned char byte = static_cast<unsigned char>(ch);
 
-    if ((byte & 0b11000000) != 0b10000000) {
+    if ((~byte & 0b11000000) == 0) {
       characters++;
     }
 
