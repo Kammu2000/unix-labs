@@ -20,6 +20,7 @@ Tools are implemented in different languages to compare ideas, trade-offs, and l
 - tail 
 - wc
 - du
+- ls
 - xargs
 - grep 
 - find
