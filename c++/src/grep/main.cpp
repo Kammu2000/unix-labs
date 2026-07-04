@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "grep.hpp"
 #include "parser.hpp"
 
 int main(int argc, char *argv[]) {
@@ -11,6 +12,8 @@ int main(int argc, char *argv[]) {
     if (options.paths.empty()) {
       throw std::runtime_error("No path was provided in command");
     }
+
+    grep(options);
 
   } catch (std::exception &e) {
     std::cerr << e.what() << "\n";
