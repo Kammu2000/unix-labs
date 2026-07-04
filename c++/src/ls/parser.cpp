@@ -6,7 +6,7 @@
 
 LsOptions parse(int argc, char *argv[]) {
   std::vector<fs::path> dir_paths;
-  LsFlags flags{.showHiddenFiles = false, .longListingFormat = false};
+  LsFlags flags{.showHiddenFiles = false, .isLongListFormat = false};
   int opt;
 
   while ((opt = getopt(argc, argv, "al")) != -1) {
@@ -17,7 +17,7 @@ LsOptions parse(int argc, char *argv[]) {
     }
 
     case 'l': {
-      flags.longListingFormat = true;
+      flags.isLongListFormat = true;
       break;
     }
 

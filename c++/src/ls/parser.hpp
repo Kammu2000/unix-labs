@@ -6,7 +6,7 @@ namespace fs = std::filesystem;
 
 struct LsFlags {
   bool showHiddenFiles;
-  bool longListingFormat;
+  bool isLongListFormat;
 };
 
 struct LsOptions {
