@@ -9,6 +9,8 @@ DuOptions parse(int argc, char *argv[]) {
       .humanReadable = false, .showFiles = false, .showTotal = false};
 
   int opt;
+  // set opterr to 0 to avoid silent error messages from getopt
+  opterr = 0;
 
   while ((opt = getopt(argc, argv, "ahc")) != -1) {
     switch (opt) {
@@ -28,7 +30,8 @@ DuOptions parse(int argc, char *argv[]) {
     }
 
     case '?': {
-      throw std::runtime_error("Unknown flag");
+      throw std::runtime_error("Unknown flag: " +
+                               std::string(1, static_cast<char>(optopt)));
       break;
     }
     }

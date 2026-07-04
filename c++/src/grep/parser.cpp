@@ -20,7 +20,7 @@ GrepOptions parse(int argc, char *argv[]) {
     }
 
     case '?': {
-      throw std::runtime_error("Unknown option: " +
+      throw std::runtime_error("Unknown flag: " +
                                std::string(1, static_cast<char>(optopt)));
       break;
     }

@@ -5,9 +5,12 @@
 #include "parser.hpp"
 
 WcOptions parse(int argc, char *argv[]) {
-  int opt;
   bool lines = false, words = false, bytes = false, characters = false;
   std::vector<std::string> fileNames;
+
+  int opt;
+  // set opterr to 0 to avoid silent error messages from getopt
+  opterr = 0;
 
   while ((opt = getopt(argc, argv, "lwcm")) != -1) {
     switch (opt) {
@@ -29,6 +32,11 @@ WcOptions parse(int argc, char *argv[]) {
     case 'm': {
       characters = true;
       break;
+    }
+
+    case '?': {
+      throw std::runtime_error("Unknown flag: " +
+                               std::string(1, static_cast<char>(optopt)));
     }
 
     default:

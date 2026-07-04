@@ -8,6 +8,8 @@ LsOptions parse(int argc, char *argv[]) {
   std::vector<fs::path> dir_paths;
   LsFlags flags{.showHiddenFiles = false, .isLongListFormat = false};
   int opt;
+  // set opterr to 0 to avoid silent error messages from getopt
+  opterr = 0;
 
   while ((opt = getopt(argc, argv, "al")) != -1) {
     switch (opt) {
@@ -22,7 +24,8 @@ LsOptions parse(int argc, char *argv[]) {
     }
 
     case '?': {
-      throw std::runtime_error("Unknownn flag");
+      throw std::runtime_error("Unknown flag: " +
+                               std::string(1, static_cast<char>(optopt)));
     }
     }
   }

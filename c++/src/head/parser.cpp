@@ -8,6 +8,8 @@ HeadOptions parse(int argc, char *argv[]) {
   std::vector<std::string> fileNames;
   int count = 0;
   int opt;
+  // set opterr to 0 to avoid silent error messages from getopt
+  opterr = 0;
 
   while ((opt = getopt(argc, argv, "n:")) != -1) {
     switch (opt) {
@@ -20,7 +22,9 @@ HeadOptions parse(int argc, char *argv[]) {
       if (optopt == 'n') {
         throw std::runtime_error("Missing value for -n");
       }
-      throw std::runtime_error("Unknown option");
+
+      throw std::runtime_error("Unknown flag: " +
+                               std::string(1, static_cast<char>(optopt)));
     }
     }
   }
