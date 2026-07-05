@@ -3,9 +3,10 @@
 #include <string>
 #include <vector>
 
-struct HeadOptions {
-  std::vector<std::string> fileNames;
-  int count;
+struct HeadOptions
+{
+    std::vector<std::string> fileNames;
+    int count;
 };
 
-HeadOptions parse(int argc, char *argv[]);
+HeadOptions parse(int argc, char* argv[]);

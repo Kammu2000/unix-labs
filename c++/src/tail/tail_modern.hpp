@@ -2,4 +2,4 @@
 
 #include <istream>
 
-void tail(std::istream &readable_stream, int k);
+void tail(std::istream& readable_stream, int k);

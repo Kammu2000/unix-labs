@@ -3,9 +3,10 @@
 #include <string>
 #include <vector>
 
-struct TailOptions {
-  std::vector<std::string> fileNames;
-  int count;
+struct TailOptions
+{
+    std::vector<std::string> fileNames;
+    int count;
 };
 
-TailOptions parse(int argc, char *argv[]);
+TailOptions parse(int argc, char* argv[]);

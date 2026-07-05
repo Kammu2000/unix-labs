@@ -4,15 +4,17 @@
 #include <vector>
 namespace fs = std::filesystem;
 
-struct DuFlags {
-  bool humanReadable;
-  bool showFiles;
-  bool showTotal;
+struct DuFlags
+{
+    bool humanReadable;
+    bool showFiles;
+    bool showTotal;
 };
 
-struct DuOptions {
-  DuFlags flags;
-  std::vector<fs::path> dir_paths;
+struct DuOptions
+{
+    DuFlags flags;
+    std::vector<fs::path> dir_paths;
 };
 
-DuOptions parse(int argc, char *argv[]);
+DuOptions parse(int argc, char* argv[]);

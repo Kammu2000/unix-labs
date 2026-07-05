@@ -2,15 +2,17 @@
 
 #include "wc_modern.hpp"
 
-WcResult wc_modern(std::istream &readable_stream) {
-  int lines = 0, words = 0, bytes = 0, characters = 0;
-  char ch;
-  bool inWord = false;
+WcResult wc_modern(std::istream& readable_stream)
+{
+    int lines = 0, words = 0, bytes = 0, characters = 0;
+    char ch;
+    bool inWord = false;
 
-  while (readable_stream.get(ch)) {
-    bytes++;
+    while (readable_stream.get(ch))
+    {
+        bytes++;
 
-    /* Solution Rationale for counting character (Unicode Point):
+        /* Solution Rationale for counting character (Unicode Point):
      UTF-8 has a nice property:
       Every Unicode character starts with a leading byte.
       Continuation bytes always start with:
@@ -29,27 +31,33 @@ WcResult wc_modern(std::istream &readable_stream) {
       Only the first byte starts a new character.
       The other three are continuation bytes.
     */
-    unsigned char byte = static_cast<unsigned char>(ch);
+        unsigned char byte = static_cast<unsigned char>(ch);
 
-    if ((~byte & 0b11000000) == 0) {
-      characters++;
+        if ((~byte & 0b11000000) == 0)
+        {
+            characters++;
+        }
+
+        if (ch == '\n')
+        {
+            lines++;
+        }
+
+        if (std::isspace(static_cast<unsigned char>(ch)))
+        {
+            inWord = false;
+        }
+        else if (!inWord)
+        {
+            words++;
+            inWord = true;
+        }
     }
 
-    if (ch == '\n') {
-      lines++;
+    if (bytes > 0 and ch != '\n')
+    {
+        lines++;
     }
 
-    if (std::isspace(static_cast<unsigned char>(ch))) {
-      inWord = false;
-    } else if (!inWord) {
-      words++;
-      inWord = true;
-    }
-  }
-
-  if (bytes > 0 and ch != '\n') {
-    lines++;
-  }
-
-  return {lines, words, bytes, characters};
+    return {lines, words, bytes, characters};
 }

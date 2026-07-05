@@ -2,4 +2,4 @@
 
 #include "parser.hpp"
 
-void grep(const GrepOptions &options);
+void grep(const GrepOptions& options);

@@ -2,4 +2,4 @@
 
 #include "parser.hpp"
 
-void xargs(const XargsOption &options);
+void xargs(const XargsOption& options);
