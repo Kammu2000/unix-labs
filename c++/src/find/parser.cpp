@@ -65,7 +65,7 @@ FindOptions parse(int argc, char* argv[])
     FindOptions options;
 
     size_t start_idx = 1;
-    std::string_view token = argv[++start_idx];
+    std::string_view token = argv[start_idx++];
 
     auto assert_arg_size = [&argc, &token](size_t i) {
         if (i + 1 >= argc)
