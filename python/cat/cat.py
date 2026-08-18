@@ -1,7 +1,6 @@
 import argparse
 import sys
-
-BUFFER_SIZE = 8 * 1024  # 8kb
+from constants import BUFFER_SIZE
 
 
 def main():
