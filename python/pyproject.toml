@@ -1,0 +1,6 @@
+[project]
+name = "unix-labs"
+version = "0.1.0"
+description = "unix-tools recreated in python for fun and learning"
+requires-python = ">=3.10"
+dependencies = []
