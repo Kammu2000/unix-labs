@@ -1,1 +1,0 @@
-BUFFER_SIZE = 8 * 1024  # 8kb
