@@ -61,6 +61,10 @@ export const parseFind = (): ParsedFind => {
 
         break;
       }
+
+      default: {
+        throw new Error(`Not a valid flag: ${token}`);
+      }
     }
   }
 
