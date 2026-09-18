@@ -6,11 +6,6 @@ def main():
     parser = argparse.ArgumentParser(description="grep.py")
 
     parser.add_argument(
-        "-l",
-        action="store_true",
-        help="flag for printing files in long list format",
-    )
-    parser.add_argument(
         "-a",
         action="store_true",
         help="flag for printing hidden files",
@@ -25,8 +20,10 @@ def main():
     args = parser.parse_args()
 
     for directory in args.dirs:
-        print(directory, end="")
-        ls(directory=directory, flags=[args.l, args.a])
+        if len(args.dirs) > 1:
+            print(f"{directory}: ")
+        ls(directory=directory, flags=[args.a])
+        print("\n")
 
 
 if __name__ == "__main__":
